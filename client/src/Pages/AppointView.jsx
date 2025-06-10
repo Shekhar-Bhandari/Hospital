@@ -25,7 +25,7 @@ const AppointView = () => {
   // Fetch appointments
   const fetchAppointments = async () => {
     try {
-      const res = await axios.get('http://localhost:8080/api/appointment', axiosConfig);
+      const res = await axios.get('https://hospital-3u6v.onrender.com/api/appointment', axiosConfig);
       setAppointments(res.data);
     } catch (error) {
       console.error('Failed to fetch appointments', error.response?.data || error.message);
@@ -41,7 +41,7 @@ const AppointView = () => {
     if (!window.confirm('Are you sure you want to delete this appointment?')) return;
 
     try {
-      await axios.delete(`http://localhost:8080/api/appointment/${id}`, axiosConfig);
+      await axios.delete(`https://hospital-3u6v.onrender.com/api/appointment/${id}`, axiosConfig);
       setAppointments(appointments.filter(a => a._id !== id));
     } catch (error) {
       console.error('Failed to delete appointment', error.response?.data || error.message);
@@ -92,7 +92,7 @@ const AppointView = () => {
 
     try {
       const res = await axios.put(
-        `http://localhost:8080/api/appointment/${editing}`,
+        `https://hospital-3u6v.onrender.com/api/appointment/${editing}`,
         formData,
         axiosConfig
       );

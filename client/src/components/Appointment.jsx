@@ -19,7 +19,7 @@ const Appointment = () => {
     headers: { Authorization: `Bearer ${token}` },
   };
 
-  const API_BASE = 'http://localhost:8080/api/appointment';
+  const API_BASE = 'https://hospital-3u6v.onrender.com/api/appointment';
 
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));

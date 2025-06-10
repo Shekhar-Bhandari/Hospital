@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import PostForm from '../components/PostForm';
 import {Link} from 'react-router-dom';
+
 const Dashboard = () => {
   const [posts, setPosts] = useState([]);
   const [editingPost, setEditingPost] = useState(null);
@@ -18,7 +19,7 @@ const Dashboard = () => {
 
   const fetchPosts = async () => {
     try {
-      const res = await axios.get('http://localhost:8080/api/posts', axiosConfig);
+      const res = await axios.get('https://hospital-3u6v.onrender.com/api/posts', axiosConfig);
       setPosts(res.data);
     } catch (error) {
       console.error("Failed to fetch posts", error.response?.data || error.message);
@@ -29,28 +30,50 @@ const Dashboard = () => {
     fetchPosts();
   }, []);
 
-  const addPost = async (post) => {
-    try {
-      const res = await axios.post('http://localhost:8080/api/posts', post, axiosConfig);
-      setPosts([...posts, res.data]);
-    } catch (error) {
-      console.error("Failed to add post", error.response?.data || error.message);
-    }
-  };
+  const addPost = async ({ title, content, imageFile }) => {
+  try {
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('content', content);
+    if (imageFile) formData.append('image', imageFile);
 
-  const updatePost = async (post) => {
-    try {
-      const res = await axios.put(`http://localhost:8080/api/posts/${editingPost._id}`, post, axiosConfig);
-      setPosts(posts.map(p => p._id === editingPost._id ? res.data : p));
-      setEditingPost(null);
-    } catch (error) {
-      console.error("Failed to update post", error.response?.data || error.message);
-    }
-  };
+    const res = await axios.post('https://hospital-3u6v.onrender.com/api/posts', formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    setPosts([...posts, res.data]);
+  } catch (error) {
+    console.error("Failed to add post", error.response?.data || error.message);
+  }
+};
+
+const updatePost = async ({ title, content, imageFile }) => {
+  try {
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('content', content);
+    if (imageFile) formData.append('image', imageFile);
+
+    const res = await axios.put(`https://hospital-3u6v.onrender.com/api/posts/${editingPost._id}`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    setPosts(posts.map(p => p._id === editingPost._id ? res.data : p));
+    setEditingPost(null);
+  } catch (error) {
+    console.error("Failed to update post", error.response?.data || error.message);
+  }
+};
 
   const deletePost = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/api/posts/${id}`, axiosConfig);
+      await axios.delete(`https://hospital-3u6v.onrender.com/api/posts/${id}`, axiosConfig);
       setPosts(posts.filter(p => p._id !== id));
     } catch (error) {
       console.error("Failed to delete post", error.response?.data || error.message);
@@ -60,6 +83,19 @@ const Dashboard = () => {
   const logout = () => {
     localStorage.removeItem('token');
     navigate('/');
+  };
+
+  // Helper function to get the full image URL
+  const getImageUrl = (imageUrl) => {
+    if (!imageUrl) return '';
+    // If it's already a full URL, return as is
+    if (imageUrl.startsWith('http')) return imageUrl;
+    // If it starts with /uploads, prepend the server URL
+    if (imageUrl.startsWith('/uploads')) {
+      return `https://hospital-3u6v.onrender.com${imageUrl}`;
+    }
+    // Otherwise, assume it's a relative path and add /uploads/
+    return `https://hospital-3u6v.onrender.com/uploads/${imageUrl}`;
   };
 
   return (
@@ -110,10 +146,11 @@ const Dashboard = () => {
               <div key={post._id} className="bg-white p-4 rounded-lg shadow">
                 {post.imageUrl && (
                   <img
-                    src={post.imageUrl}
+                    src={getImageUrl(post.imageUrl)}
                     alt={post.title}
                     className="w-full h-40 object-cover rounded mb-4"
                     onError={(e) => {
+                      console.log('Image failed to load:', getImageUrl(post.imageUrl));
                       e.target.onerror = null;
                       e.target.src = '/images/default.jpg';
                     }}

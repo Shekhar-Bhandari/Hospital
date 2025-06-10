@@ -15,7 +15,7 @@ const ContactView = () => {
   // Fetch contacts
   const fetchContacts = async () => {
     try {
-      const res = await axios.get('http://localhost:8080/api/contacts', axiosConfig);
+      const res = await axios.get('https://hospital-3u6v.onrender.com/api/contacts', axiosConfig);
       setContacts(res.data);
     } catch (error) {
       console.error("Failed to fetch contacts", error.response?.data || error.message);
@@ -29,7 +29,7 @@ const ContactView = () => {
   // Delete contact
   const deleteContact = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/api/contacts/${id}`, axiosConfig);
+      await axios.delete(`https://hospital-3u6v.onrender.com/api/contacts/${id}`, axiosConfig);
       setContacts(contacts.filter(c => c._id !== id));
     } catch (error) {
       console.error("Failed to delete contact", error.response?.data || error.message);

@@ -8,7 +8,7 @@ const postSchema = new mongoose.Schema({
   },
   content: {
     type: String,
-    required: true,  // Make content required here
+    required: false,  // Make content optional to allow posts with just images
     trim: true
   },
   imageUrl: {
