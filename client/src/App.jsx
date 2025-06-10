@@ -124,7 +124,7 @@ import Header from './components/Header';
 import Home from './Pages/Home';
 import Footer from './components/Footer';
 
-import AboutUs from './pages/AboutUs';
+import AboutUs from './Pages/AboutUs';
 import Appointment from './components/Appointment';
 import OurDoctors from './Pages/OurDoctors';
 import ContactPage from './Pages/ContactPage';
