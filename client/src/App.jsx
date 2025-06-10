@@ -140,6 +140,8 @@ import SingleService from './Pages/SingleService'; // updated to match the filen
 import PostsList from './Pages/PostsList';
 import {Toaster} from 'react-hot-toast'
 import Register from './Pages/Register';
+import AppointView from './Pages/AppointView'
+import ContactView from './Pages/ContactView'
 
 const App = () => {
   return (
@@ -162,7 +164,11 @@ const App = () => {
         <Route path='/services/:id' element={<SingleService />} />
         <Route path='/posts' element={<PostsList />} />
         <Route path='/register' element={<Register />} />
-        
+         <Route path='/appointview' element={<AppointView />} />
+          <Route path='/contactview' element={<ContactView />} />
+{/** dashboard path  */}
+          
+      
         {/* Protected routes */}
         <Route
           path="/admin/dashboard"

@@ -6,6 +6,7 @@ const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const postsRoutes = require('./routes/postsRoutes');
 const contactRoutes=require('./routes/contactRoutes')
+const appointRoutes=require('./routes/appointRoutes')
 connectDB();
 
 const app = express();
@@ -23,7 +24,10 @@ app.use('/api/auth', authRoutes);
 // Protected routes
 app.use('/api/posts', postsRoutes);
 //contact route
-app.use('/api/contact',contactRoutes )
+app.use('/api/contacts',contactRoutes )
+
+//apointment ROutes
+app.use('/api/appointment',appointRoutes)
 app.listen(PORT, () => {
     console.log(`Server running and MongoDB connected at http://localhost:${PORT}`);
 });

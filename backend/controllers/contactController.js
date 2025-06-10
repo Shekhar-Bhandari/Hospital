@@ -1,22 +1,59 @@
-const Contact = require('../models/contactModel'); // Import model
+// controllers/contactController.js
+const Contact = require('../models/contactModel');
 
-exports.handleContactForm = async (req, res) => {
+// Get all contacts
+exports.getAllContacts = async (req, res) => {
+  try {
+    const contacts = await Contact.find().sort({ createdAt: -1 });
+    res.status(200).json(contacts);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Create a new contact
+exports.createContact = async (req, res) => {
   const { name, email, subject, message } = req.body;
 
-  // Simple validation
   if (!name || !email || !subject || !message) {
-    return res.status(400).json({ error: 'All fields are required' });
+    return res.status(400).json({ message: 'All fields are required.' });
   }
 
   try {
-    // Save contact to MongoDB
     const newContact = new Contact({ name, email, subject, message });
-    await newContact.save();
-
-    
-    res.status(200).json({ message: 'Message received successfully!' });
+    const savedContact = await newContact.save();
+    res.status(201).json(savedContact);
   } catch (error) {
-    console.error('Error saving contact:', error);
-    res.status(500).json({ error: 'Server error. Please try again later.' });
+    res.status(400).json({ message: error.message });
+  }
+};
+
+// Update contact by ID
+exports.updateContact = async (req, res) => {
+  const contactId = req.params.id;
+
+  try {
+    const updatedContact = await Contact.findByIdAndUpdate(contactId, req.body, { new: true });
+    if (!updatedContact) {
+      return res.status(404).json({ message: 'Contact not found' });
+    }
+    res.status(200).json(updatedContact);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+// Delete contact by ID
+exports.deleteContact = async (req, res) => {
+  const contactId = req.params.id;
+
+  try {
+    const deletedContact = await Contact.findByIdAndDelete(contactId);
+    if (!deletedContact) {
+      return res.status(404).json({ message: 'Contact not found' });
+    }
+    res.status(200).json({ message: 'Contact deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };

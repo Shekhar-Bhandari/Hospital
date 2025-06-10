@@ -10,6 +10,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const navItems = [
+
     { name: 'Home', path: '/' },
     { name: 'About us', path: '/AboutUs' },
     { name: 'Services', path: '/services-page' },
@@ -17,7 +18,8 @@ const Navbar = () => {
     { name: 'Doctors', path: '/our-doctors' },
     { name: 'Contact', path: '/contact' },
     { name: '', path: '/appointment' },
-    { name: '', path: '/news/:id' }
+    { name: '', path: '/news/:id' },
+     
   ];
 
   useEffect(() => {

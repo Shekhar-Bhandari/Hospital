@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import PostForm from '../components/PostForm';
-
+import {Link} from 'react-router-dom';
 const Dashboard = () => {
   const [posts, setPosts] = useState([]);
   const [editingPost, setEditingPost] = useState(null);
@@ -63,9 +63,9 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col md:flex-row">
+    <div className="min-h-screen bg-gray-100 flex flex-col  md:flex-row">
       {/* Sidebar */}
-      <div className="w-full md:w-64 bg-white p-6 shadow-lg">
+      <div className="flex flex-col gap-10 w-full md:w-64 bg-white p-6 shadow-lg">
         <h2 className="text-2xl font-bold text-blue-900 mb-6 text-center md:text-left">Dashboard</h2>
         <button
           onClick={logout}
@@ -73,6 +73,25 @@ const Dashboard = () => {
         >
           Logout
         </button>
+
+        {/*Appointment*/}
+       
+<button
+  className="block text-center bg-blue-900 hover:bg-blue-800 text-white py-2 rounded-lg"
+  onClick={() => {
+    navigate('/appointview'); // Navigate programmatically
+  }}
+>
+  Appointment
+</button>
+{/*contacts*/}
+<Link
+  to='/contactview'
+  className="block text-center bg-blue-900 hover:bg-blue-800 text-white py-2 rounded-lg"
+>
+  Contacts
+</Link>
+
       </div>
 
       {/* Main content */}
